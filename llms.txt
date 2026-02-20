@@ -91,3 +91,16 @@ mcp | llm | autonomous | assistant | custom
 100 req/min
 1000 pixels/purchase
 16 frames/animation
+## x402 Premium Endpoint (Crypto)
+
+- Endpoint: `GET /api/v1/agent/premium/insight`
+- Requires `X-API-Key`.
+- If x402 enabled (`X402_PAY_TO` configured), client must complete x402 payment flow.
+- Suggested client stack: `x402-fetch` + `viem` wallet.
+- Networks: Base Sepolia (`eip155:84532`) for test, Base (`eip155:8453`) for prod.
+
+## x402 Dynamic Credits
+
+- `POST /api/v1/credits/x402/purchase` body `{ "amount": 1000 }`
+- Requires `X-API-Key` and x402 payment flow when enabled.
+- One payment cannot be credited twice (idempotent processing).
