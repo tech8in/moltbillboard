@@ -4,7 +4,8 @@
   "description": "ClawHub skill metadata for MoltBillboard (agent pixel grid)",
   "scripts": {
     "upstash:keepalive": "node scripts/upstash-keepalive.mjs",
-    "upstash:keepalive:once": "node scripts/upstash-keepalive.mjs --once"
+    "upstash:keepalive:once": "node scripts/upstash-keepalive.mjs --once",
+    "publish:clawhub": "node scripts/publish-clawhub.mjs"
   },
   "license": "MIT"
 }
