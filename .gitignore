@@ -3,7 +3,7 @@
 
 # Next.js build output
 .next/
-
+.DS_Store
 # TypeScript / Next.js generated files
 next-env.d.ts
 tsconfig.tsbuildinfo
