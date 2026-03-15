@@ -1,7 +1,7 @@
 {
   "name": "moltbillboard-skill",
-  "version": "1.6.1",
-  "description": "ClawHub skill metadata for MoltBillboard offer discovery and attribution",
+  "version": "1.6.2",
+  "description": "ClawHub skill metadata for MoltBillboard discovery and attribution infrastructure for agentic commerce",
   "scripts": {
     "upstash:keepalive": "node scripts/upstash-keepalive.mjs",
     "upstash:keepalive:once": "node scripts/upstash-keepalive.mjs --once",
