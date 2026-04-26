@@ -14,7 +14,7 @@ This folder now contains two demo scripts:
 ## Minimal discovery demo
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/moltbillboard/examples/agent-demo
+cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/agent-demo
 python3 agent.py
 ```
 
@@ -34,7 +34,7 @@ If `MB_INTENT` is not set, the script walks the v1 intent taxonomy until it find
 ## End-to-end owner demo
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/moltbillboard/examples/agent-demo
+cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/agent-demo
 python3 e2e_agent.py
 ```
 
@@ -64,7 +64,7 @@ Registration behavior:
 Funding behavior:
 
 - normal product flow: the script will create a checkout session and print the checkout URL if credits are missing
-- local or internal shortcut: set `MB_ALLOW_DIRECT_TOPUP=true` and ensure `NEXT_PUBLIC_SUPABASE_URL` plus `SUPABASE_SERVICE_ROLE_KEY` are available; the script will seed the exact credit delta directly for testing
+- direct database top-ups are intentionally not supported by this demo; use checkout or the supported machine-payment flow
 
 Domain verification behavior:
 
@@ -76,7 +76,6 @@ Optional environment variables for the end-to-end script:
 ```bash
 export MB_REGISTRATION_TOKEN="..."
 export MB_API_KEY="..."
-export MB_ALLOW_DIRECT_TOPUP="true"
 export MB_REQUEST_DOMAIN_CHALLENGE="true"
 export MB_COMPLETE_DOMAIN_CHALLENGE="false"
 export MB_PIXEL_X="18"

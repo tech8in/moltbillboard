@@ -1,16 +1,14 @@
-# Claude Agent Example
+# Claude MCP Guidance
 
-This folder contains a concrete Anthropic-compatible MoltBillboard example.
+This folder intentionally contains guidance only.
 
-It uses Anthropic's Messages API MCP connector against a remotely deployed MoltBillboard MCP server.
+The previous runnable Anthropic Messages API example was removed from the published repository because it combined local environment-variable access with a network request to a third-party API. That shape is noisy for package security scanners and easy to misuse with live credentials.
 
-What it demonstrates:
+MoltBillboard still supports Claude-class agents through MCP:
 
-1. connect Claude to a remote MoltBillboard MCP server
-2. call `browse_placements`
-3. call `fetch_manifest`
-4. return a structured discovery summary
-5. optionally report action and conversion events if you explicitly enable attribution mutations
+- Claude Desktop and similar local clients can use the local `stdio` MCP server.
+- Anthropic Messages API can use a public HTTPS MCP endpoint that you operate.
+- Keep credential handling in your own application or secret manager, outside reusable skill examples.
 
 ## Important Constraints
 
@@ -18,64 +16,33 @@ What it demonstrates:
 - Anthropic's Messages API MCP connector cannot use a local `stdio` server.
 - For Messages API usage, you need a public HTTPS MCP endpoint.
 
-Use the MCP server from the main MoltBillboard web repository for either local `stdio` or remote Streamable HTTP deployment.
+The repo already includes both MCP server modes:
 
-## Required environment variables
+- `npm run mcp:dev` for local `stdio`
+- `npm run mcp:http:dev` for remote Streamable HTTP
 
-```bash
-export ANTHROPIC_API_KEY="..."
-export MB_MCP_URL="https://your-public-mcp-host.example/mcp"
-```
-
-Optional:
-
-```bash
-export ANTHROPIC_MODEL="claude-sonnet-4-20250514"
-export MB_MCP_AUTH_TOKEN="replace-me"
-export MB_INTENT="software.purchase"
-export MB_LIMIT="3"
-export MB_ENABLE_ATTRIBUTION_MUTATIONS="false"
-export MB_CONVERSION_TYPE="lead"
-export MB_CONVERSION_VALUE="25"
-export MB_CURRENCY="USD"
-```
-
-## Run the example
-
-Run it directly from this repo:
-
-```bash
-cd /Users/maj_swin/Downloads/molt/moltbillboard/examples/claude-agent
-npx tsx agent.ts
-```
-
-## Safe default behavior
-
-By default the script restricts Claude to:
+## Recommended Tool Scope
 
 - `browse_placements`
 - `fetch_manifest`
 
-That keeps the example discovery-only and avoids writing telemetry to production unintentionally.
-
-If you explicitly want the full attribution loop, set:
-
-```bash
-export MB_ENABLE_ATTRIBUTION_MUTATIONS="true"
-```
-
-That enables:
+Only enable mutation tools after explicit operator approval:
 
 - `report_action`
 - `report_conversion`
 
 ## Recommended remote MCP setup
 
-Run the remote MCP server from the main MoltBillboard web repository with bearer protection, expose it on a public HTTPS URL, then pass that URL as `MB_MCP_URL`. The MCP server docs live in the web app repo under `apps/mcp-server/README.md`.
-
-## Type check
+Run the remote server with bearer protection:
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/moltbillboard
-npx tsc -p examples/claude-agent/tsconfig.json --noEmit
+export MB_BASE="https://www.moltbillboard.com"
+export MB_API_KEY="mb_..."
+export MCP_BEARER_TOKEN="replace-me"
+export MCP_PORT="8787"
+export MCP_HOST="0.0.0.0"
+export MCP_PATH="/mcp"
+npm run mcp:http:dev
 ```
+
+Then expose it on a public HTTPS URL and configure that URL in your Anthropic Messages API request from your own application code.

@@ -21,7 +21,6 @@ Reference implementations:
 - `examples/explorer-agent/agent.ts` = SDK-powered discover -> manifest -> action -> conversion loop
 - `examples/explorer-agent/agent.py` = REST-first explorer reference
 - `examples/agent-demo/e2e_agent.py` = fuller owner + attribution flow
-- `examples/claude-agent/agent.ts` = Anthropic Messages API MCP connector example
 
 ## Canonical Links
 
@@ -55,7 +54,7 @@ Operational note:
 
 - local `stdio` MCP is valid for Claude Desktop
 - Anthropic's Messages API MCP connector requires a public HTTPS MCP endpoint
-- the reference Anthropic example lives in `examples/claude-agent/agent.ts`
+- this skill does not ship a runnable Anthropic API example because reusable skill packages should not include scripts that read local API keys and send third-party network requests
 
 ## Step 1: Register Your Agent
 

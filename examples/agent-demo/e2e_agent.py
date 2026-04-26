@@ -114,39 +114,6 @@ def json_request(
         raise RuntimeError(f"{method.upper()} {url} failed: {exc.reason}") from exc
 
 
-def supabase_request(
-    supabase_url: str,
-    service_role_key: str,
-    method: str,
-    path: str,
-    payload: Optional[Any] = None,
-    prefer: Optional[str] = None,
-) -> Any:
-    url = supabase_url.rstrip("/") + path
-    headers = {
-        "Accept": "application/json",
-        "apikey": service_role_key,
-        "Authorization": f"Bearer {service_role_key}",
-    }
-    data = None
-    if payload is not None:
-        headers["Content-Type"] = "application/json"
-        data = json.dumps(payload).encode("utf-8")
-    if prefer:
-        headers["Prefer"] = prefer
-
-    req = request.Request(url, data=data, headers=headers, method=method.upper())
-    try:
-        with request.urlopen(req, timeout=30) as response:
-            raw = response.read().decode("utf-8")
-            if not raw:
-                return None
-            return json.loads(raw)
-    except error.HTTPError as exc:
-        body = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"{method.upper()} {url} failed with {exc.code}: {body}") from exc
-
-
 def register_agent(base_url: str, identifier: str, name: str, homepage: str) -> Dict[str, Any]:
     payload = {
         "identifier": identifier,
@@ -239,95 +206,6 @@ def reserve_quote(base_url: str, api_key: str, quote_id: str) -> Dict[str, Any]:
 
 def get_credit_balance(base_url: str, api_key: str) -> Dict[str, Any]:
     return json_request(base_url, "GET", "/api/v1/credits/balance", headers={"X-API-Key": api_key})
-
-
-def direct_top_up_if_available(agent_id: str, amount: float) -> bool:
-    if amount <= 0:
-        return False
-
-    supabase_url = env("NEXT_PUBLIC_SUPABASE_URL")
-    service_role_key = env("SUPABASE_SERVICE_ROLE_KEY")
-    allow_direct = env_bool("MB_ALLOW_DIRECT_TOPUP", False)
-    if not allow_direct or not supabase_url or not service_role_key:
-        return False
-
-    credits_path = (
-        "/rest/v1/credits"
-        f"?agent_id=eq.{parse.quote(agent_id)}"
-        "&select=agent_id,balance,total_purchased,total_spent"
-    )
-    rows = supabase_request(supabase_url, service_role_key, "GET", credits_path) or []
-    row = rows[0] if rows else None
-
-    current_balance = float((row or {}).get("balance") or 0)
-    current_purchased = float((row or {}).get("total_purchased") or 0)
-    current_spent = float((row or {}).get("total_spent") or 0)
-    next_balance = round(current_balance + amount, 2)
-    next_purchased = round(current_purchased + amount, 2)
-
-    if row:
-        supabase_request(
-            supabase_url,
-            service_role_key,
-            "PATCH",
-            f"/rest/v1/credits?agent_id=eq.{parse.quote(agent_id)}",
-            payload={
-                "balance": next_balance,
-                "total_purchased": next_purchased,
-            },
-            prefer="return=representation",
-        )
-    else:
-        supabase_request(
-            supabase_url,
-            service_role_key,
-            "POST",
-            "/rest/v1/credits",
-            payload={
-                "agent_id": agent_id,
-                "balance": next_balance,
-                "total_purchased": next_purchased,
-                "total_spent": current_spent,
-            },
-            prefer="return=representation",
-        )
-
-    supabase_request(
-        supabase_url,
-        service_role_key,
-        "POST",
-        "/rest/v1/credit_transactions",
-        payload={
-            "agent_id": agent_id,
-            "amount": amount,
-            "type": "purchase",
-            "description": "Seeded credits for examples/agent-demo/e2e_agent.py",
-            "metadata": {
-                "provider": "internal_seed",
-                "script": "examples/agent-demo/e2e_agent.py",
-            },
-        },
-        prefer="return=minimal",
-    )
-
-    supabase_request(
-        supabase_url,
-        service_role_key,
-        "POST",
-        "/rest/v1/feed_events",
-        payload={
-            "event_type": "credits_purchased",
-            "agent_id": agent_id,
-            "data": {
-                "amount": amount,
-                "provider": "internal_seed",
-                "newBalance": next_balance,
-            },
-        },
-        prefer="return=minimal",
-    )
-
-    return True
 
 
 def checkout_credits(base_url: str, api_key: str, amount: float, quote_id: str, reservation_id: str) -> Dict[str, Any]:
@@ -520,16 +398,10 @@ def main() -> int:
 
     if current_balance < total_cost:
         delta = round(total_cost - current_balance, 2)
-        seeded = False
-        if agent_id:
-            seeded = direct_top_up_if_available(agent_id, delta)
-        if seeded:
-            print(f"Directly seeded ${delta:.2f} credits via Supabase service role.")
-        else:
-            checkout = checkout_credits(base_url, api_key, total_cost, quote_id, reservation["reservationId"])
-            print_json("Checkout required", checkout)
-            print("Manual step required: complete checkout, wait for webhook crediting, then rerun with MB_API_KEY.")
-            return 0
+        checkout = checkout_credits(base_url, api_key, total_cost, quote_id, reservation["reservationId"])
+        print_json("Checkout required", checkout)
+        print(f"Manual step required: add ${delta:.2f} through checkout, wait for webhook crediting, then rerun with MB_API_KEY.")
+        return 0
 
     purchase = purchase_reservation(base_url, api_key, reservation["reservationId"])
     print_json("Purchase", purchase)
