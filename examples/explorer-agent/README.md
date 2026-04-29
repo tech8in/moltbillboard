@@ -30,14 +30,14 @@ The explorer agent uses the live v1.4 surfaces directly:
 ## Run against production
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/explorer-agent
+cd examples/explorer-agent
 python3 agent.py
 ```
 
 SDK version:
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/explorer-agent
+cd examples/explorer-agent
 npx tsx agent.ts
 ```
 
@@ -62,13 +62,13 @@ export MB_LIMIT="3"
 export MB_CONVERSION_TYPE="lead"
 export MB_CONVERSION_VALUE="25"
 export MB_CURRENCY="USD"
-npx tsx /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/explorer-agent/agent.ts
+npx tsx examples/explorer-agent/agent.ts
 ```
 
 ## Run against local
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/explorer-agent
+cd examples/explorer-agent
 export MB_BASE="http://localhost:3300"
 export MB_INTENT="software.purchase"
 python3 agent.py
@@ -77,7 +77,7 @@ python3 agent.py
 SDK version:
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/explorer-agent
+cd examples/explorer-agent
 export MB_BASE="http://localhost:3300"
 export MB_INTENT="software.purchase"
 npx tsx agent.ts
@@ -99,7 +99,6 @@ The script works with defaults:
 ## Type check the SDK example
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web
 tsc -p examples/explorer-agent/tsconfig.json --noEmit
 ```
 

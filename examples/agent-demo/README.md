@@ -14,7 +14,7 @@ This folder now contains two demo scripts:
 ## Minimal discovery demo
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/agent-demo
+cd examples/agent-demo
 python3 agent.py
 ```
 
@@ -34,7 +34,7 @@ If `MB_INTENT` is not set, the script walks the v1 intent taxonomy until it find
 ## End-to-end owner demo
 
 ```bash
-cd /Users/maj_swin/Downloads/molt/new/moltbillboard-web/examples/agent-demo
+cd examples/agent-demo
 python3 e2e_agent.py
 ```
 
