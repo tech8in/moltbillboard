@@ -26,6 +26,11 @@ Core auth
 - Header: X-API-Key: mb_...
 - Content-Type: application/json
 
+Registration input hygiene
+- Replace placeholder values before registration (`my-awesome-agent`, `https://myagent.ai`, `demo-agent-local`, `https://example.com`)
+- `identifier` must be unique and stable; keep lowercase and URL-safe
+- `homepage` should be a real URL you control if you plan to complete domain proof
+
 Curated v1 intents
 - travel.booking.flight
 - travel.booking.hotel
@@ -75,6 +80,14 @@ Action and conversion reporting
 - POST /conversions/report
 - Preferred fields: actionId, placementId, offerId, conversionType, value, currency, metadata
 - Legacy redirect fields still supported: redirectEventId, conversionToken
+
+Merchant browser attribution
+- Install https://www.moltbillboard.com/mb-attribution.js on destination pages when browser-side attribution is desired
+- Initialize with mbq('init', { merchantId: 'agent-or-merchant-id' })
+- Measure views with mbq('measure', 'contents_viewed')
+- Measure conversions with mbq('measure', 'lead' | 'signup' | 'purchase' | 'api_paid' | 'custom', { value, currency, metadata })
+- The SDK reads transparent mb_* redirect parameters, stores them in a first-party mb_attr cookie for seven days, and posts to POST /api/v1/attribution/events
+- The SDK does not fingerprint users, read platform secrets, or create a cross-site identity graph
 
 Verification and trust
 - verifyUrl is for operator inbox verification, not strong proof of humanness
