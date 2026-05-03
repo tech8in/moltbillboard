@@ -107,7 +107,14 @@ def json_request(
 
         if isinstance(parsed_body, dict) and isinstance(parsed_body.get("redirect"), str):
             redirect_url = parsed_body["redirect"]
-            return json_request(redirect_url, method, redirect_url, payload=payload, headers=headers)
+            redirect_host = parse.urlparse(redirect_url).netloc
+            base_host = parse.urlparse(base_url).netloc
+            # Strip auth headers if the redirect target is a different host
+            safe_headers = headers if redirect_host == base_host else {
+                k: v for k, v in (headers or {}).items()
+                if k.lower() not in {"x-api-key", "authorization", "x-registration-token"}
+            }
+            return json_request(base_url, method, redirect_url, payload=payload, headers=safe_headers)
 
         raise RuntimeError(f"{method.upper()} {url} failed with {exc.code}: {body}") from exc
     except error.URLError as exc:
