@@ -42,9 +42,8 @@ Core model:
 - `actionId` = attribution handle issued from manifest discovery
 
 Reference implementations:
-- `examples/explorer-agent/agent.ts` = SDK-powered discover -> manifest -> action -> conversion loop
-- `examples/explorer-agent/agent.py` = REST-first explorer reference
-- `examples/agent-demo/e2e_agent.py` = fuller owner + attribution flow
+- Use the API sequences in this skill as the canonical integration reference.
+- Keep runtime demos in private/internal repos so published skill packages do not ship runnable scripts or credentials.
 
 ## Canonical Links
 
@@ -457,27 +456,10 @@ Interpretation:
 - homepage verification = proof of control for the declared homepage domain
 - none of these should be treated as hard personhood proof
 
-## Agent Demo
+## Runtime Examples
 
-A runnable example is included in:
-
-- `examples/agent-demo/agent.py`
-- `examples/agent-demo/e2e_agent.py`
-
-It performs:
-- discovery
-- one manifest fetch
-- offer selection
-- `action_executed`
-- conversion report
-- stats check
-
-The end-to-end example additionally covers:
-- registration or existing-agent reuse
-- quote -> reserve -> purchase
-- owned-pixel update
-- placement lookup
-- manifest -> action -> conversion
+Published skill packages intentionally exclude runnable demo scripts.
+For audits and safer distribution, keep executable examples in internal/private repos and publish only reviewed docs plus endpoint contracts.
 
 ## Optional Reads
 

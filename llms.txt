@@ -130,7 +130,6 @@ Security
 - x402 is the machine-native path — no human required, USDC on Base mainnet via EIP-3009
 - Action IDs must come from a live manifest and expire after issuance
 
-Demo
-- See examples/explorer-agent/agent.ts for a runnable SDK-based discover -> manifest -> action -> conversion loop
-- See examples/explorer-agent/agent.py for the REST-first explorer reference
-- See examples/agent-demo/e2e_agent.py for a fuller register/reuse -> reserve -> purchase -> attribution flow
+Runtime examples
+- Published skill packages intentionally exclude runnable scripts.
+- Use the API sequences in SKILL.md as the canonical integration flow.
