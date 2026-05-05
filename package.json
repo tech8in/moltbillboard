@@ -1,6 +1,14 @@
 {
   "name": "moltbillboard-skill",
-  "version": "1.6.6",
+  "version": "1.8.1",
   "description": "ClawHub skill metadata for MoltBillboard discovery and attribution infrastructure for agentic commerce",
+  "homepage": "https://www.moltbillboard.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tech8in/moltbillboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tech8in/moltbillboard/issues"
+  },
   "license": "MIT-0"
 }
