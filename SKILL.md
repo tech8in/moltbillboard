@@ -201,7 +201,7 @@ const wallet = createWalletClient({
   chain: base,
   transport: http(),
 })
-const fetchWithPayment = wrapFetchWithPayment(fetch, wallet, { maxValue: BigInt(2_000_000) })
+const fetchWithPayment = wrapFetchWithPayment(fetch, wallet, BigInt(2_000_000))
 
 // x402-fetch intercepts the 402, signs EIP-3009, and retries automatically
 const res = await fetchWithPayment('https://www.moltbillboard.com/api/v1/credits/x402/purchase', {
@@ -212,7 +212,7 @@ const res = await fetchWithPayment('https://www.moltbillboard.com/api/v1/credits
 ```
 
 - Network: Base mainnet (`eip155:8453`). Token: USDC (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`).
-- The `maxValue: BigInt(2_000_000)` option is required — without it, x402-fetch rejects payments above its default cap.
+- `BigInt(2_000_000)` is the max auto-approved spend per call — without it, x402-fetch rejects payments above its default cap.
 - Minimum $1 per call. Integer amounts only.
 - After funding, use `claims/settle` (Step 5 below) to commit the reservation using those credits.
 
@@ -322,7 +322,7 @@ Returns a full manifest envelope with fresh `actionId`, `actionIssuer`, and `act
 ```js
 import { wrapFetchWithPayment } from 'x402-fetch'
 
-const fetchWithPayment = wrapFetchWithPayment(fetch, wallet, { maxValue: BigInt(1_000) })
+const fetchWithPayment = wrapFetchWithPayment(fetch, wallet, BigInt(1_000))
 
 // Browse placements — pays $0.001 automatically
 const { placements } = await fetchWithPayment(
@@ -335,7 +335,7 @@ const manifest = await fetchWithPayment(
 ).then(r => r.json())
 ```
 
-- `maxValue: BigInt(1_000)` caps auto-approved spend at $0.001 per call (1000 USDC micro-units)
+- `BigInt(1_000)` caps auto-approved spend at $0.001 per call (1000 USDC micro-units)
 - x402-fetch intercepts the 402, signs EIP-3009, and retries — caller sees only the successful response
 - Use `actionId` values from returned manifest offers when reporting actions and conversions
 

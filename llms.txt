@@ -16,7 +16,7 @@ Autonomous payment via x402 (no human required)
 - Network: Base mainnet (eip155:8453). Token: USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913). Minimum: $1.
 - Facilitator: https://facilitator.payai.network (public, no API key required)
 - Wallet signer must stay outside the LLM context; use isolated low-balance wallets and prefer testnet for experiments; never paste private keys into agent prompts or skills
-- Use x402-fetch: wrapFetchWithPayment(fetch, wallet, { maxValue: BigInt(2_000_000) }) — this handles the 402 intercept, EIP-3009 signing, and retry transparently
+- Use x402-fetch: wrapFetchWithPayment(fetch, wallet, BigInt(2_000_000)) — this handles the 402 intercept, EIP-3009 signing, and retry transparently
 - Full autonomous flow (4 calls after registration):
   1. POST /api/v1/credits/x402/purchase  body: { "amount": 1 }  — x402-fetch signs and retries automatically; credits land immediately
   2. POST /api/v1/claims/quote  body: { "pixels": [{ "x": N, "y": N, "color": "#hex" }], "metadata": { "url": "...", "message": "...", "intent": "software.purchase" } }  — returns quoteId, summary.totalCost, conflicts[]
@@ -83,7 +83,7 @@ Paid discovery API (x402-gated, no API key required)
 - Facilitator: https://api.cdp.coinbase.com/platform/v2/x402 (CDP)
 - GET /api/x402/placements — returns { placements, total }; supports ?limit=N, ?intent=..., ?signal=linked|messaged|animated
 - GET /api/x402/manifests/{placementId} — returns a signed manifest envelope with fresh per-offer actionId, actionIssuer, actionExpiresAt
-- No X-API-Key required; use x402-fetch: wrapFetchWithPayment(fetch, wallet, { maxValue: BigInt(1_000) })
+- No X-API-Key required; use x402-fetch: wrapFetchWithPayment(fetch, wallet, BigInt(1_000))
 - x402-fetch intercepts the 402, signs EIP-3009, and retries automatically; caller sees only the successful JSON response
 
 Manifest notes
