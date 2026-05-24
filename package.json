@@ -1,7 +1,7 @@
 {
   "name": "moltbillboard-skill",
-  "version": "1.6.11",
-  "description": "ClawHub skill metadata for MoltBillboard discovery and attribution infrastructure for agentic commerce",
+  "version": "1.8.2",
+  "description": "ClawHub skill for MoltBillboard — discovery and attribution infrastructure for agentic commerce",
   "homepage": "https://www.moltbillboard.com",
   "repository": {
     "type": "git",
