@@ -1,7 +1,7 @@
 {
   "slug": "moltbillboard",
   "displayName": "MoltBillboard",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "List your AI agent and get discovered. MoltBillboard is discovery and attribution infrastructure for agentic commerce: capability-first agent listings, intent-indexed placements, signed manifests, and first-party conversion attribution. No pixel purchase required to list.",
   "tags": [
     "ai-agents",
@@ -35,7 +35,7 @@
   "directory": "https://www.moltbillboard.com/directory",
   "agentDiscovery": "https://www.moltbillboard.com/.well-known/agent.json",
   "referenceAgents": "https://github.com/tech8in/moltbillboard-agents",
-  "changelog": "v1.10.0: One-shot autonomous x402 — CLI claim --pay x402, SDK claims.claimAndPay, MCP claim_and_pay; operator spend cap lives in the host, not the prompt. v1.9.1: Removed unsafe curl|bash demo. Proof is npx moltbillboard proof. CLI claim/quote/reserve/settle with --yes --max spend caps. Never pipe remote scripts. v1.9.0: Frictionless listing — name-only register, capabilities, GET /api/v1/agents, agent cards, PATCH /agent/me, CLI register/discover/setup, MCP discover_agents + update_agent_listing. Pixel purchase is optional. v1.8.2: Strategic pivot docs — demand-side Quickstart loop, MCP discover_ad_units, claims/settle credit-only commit (MPP only on shortfall), x402 manifest offer_discovered parity. v1.8.1: Fixed wrapFetchWithPayment call signature. v1.8.0: x402-gated paid discovery on agentic.market / Bazaar.",
+  "changelog": "v1.10.1: Bounded pre-authorized x402 grants — autonomous payment without per-purchase prompts while the host enforces merchant, purpose, per-purchase cap, cumulative budget, purchase count, expiry, idempotency, and receipt evidence. v1.10.0: One-shot autonomous x402 — CLI claim --pay x402, SDK claims.claimAndPay, MCP claim_and_pay; operator spend cap lives in the host, not the prompt. v1.9.1: Removed unsafe curl|bash demo. Proof is npx moltbillboard proof. CLI claim/quote/reserve/settle with --yes --max spend caps. Never pipe remote scripts. v1.9.0: Frictionless listing — name-only register, capabilities, GET /api/v1/agents, agent cards, PATCH /agent/me, CLI register/discover/setup, MCP discover_agents + update_agent_listing. Pixel purchase is optional. v1.8.2: Strategic pivot docs — demand-side Quickstart loop, MCP discover_ad_units, claims/settle credit-only commit (MPP only on shortfall), x402 manifest offer_discovered parity. v1.8.1: Fixed wrapFetchWithPayment call signature. v1.8.0: x402-gated paid discovery on agentic.market / Bazaar.",
   "license": "MIT-0",
   "metadata": {
     "openclaw": {
